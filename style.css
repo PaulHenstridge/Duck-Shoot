@@ -146,7 +146,7 @@
     }
 
     40% {
-        top: 45%
+        top: 25%
     }
 
     60% {
@@ -168,4 +168,49 @@
     width: 45px;
     background-color: rgb(213, 207, 36);
     animation: curlew 7s ease-in-out infinite;
+}
+
+
+@keyframes hawk {
+    0% {
+        left: -10%;
+    }
+
+    10% {
+        top: 3%;
+    }
+
+    20% {
+        top: 8%;
+    }
+
+    40% {
+        top: 45%
+    }
+
+
+    60% {
+        left: 40%;
+    }
+
+    70% {}
+
+    80% {
+        top: 65%;
+    }
+
+    90% {}
+
+    100% {
+        top: 70%;
+        left: 110%;
+    }
+}
+
+.hawk {
+    position: absolute;
+    height: 15px;
+    width: 45px;
+    background-color: rgb(213, 142, 36);
+    animation: hawk 7s ease-in-out infinite;
 }

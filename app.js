@@ -21,11 +21,15 @@ let score = 0
 let shotsFired = 0
 let holeDiameter = 15   // this can be maipulated to simulate bigger.smaller guns
 let birdsArray = []
-let ammo = 10
+let ammo = 99
+let round
+
 
 const rounds = {
-    1: ['pigeon', 'pigeon', 'pigeon'],
-    2: ['pigeon', 'swallow', 'pigeon', 'swallow']
+    1: ['pigeon', 'pigeon', 'pigeon', 'pigeon', 'pigeon', 'pigeon'],
+    2: ['pigeon', 'swallow', 'pigeon', 'swallow', 'pigeon', 'pigeon', 'swallow', 'swallow', 'snipe', 'snipe'],
+    3: ['swallow', 'pigeon', 'swallow', 'snipe', 'swallow', 'curlew', 'snipe', 'pigeon', 'osprey'],
+    4: ['hawk', 'swallow', 'pigeon', 'swallow', 'osprey', 'snipe', 'curlew', 'hawk', 'snipe', 'snipe', 'snipe', 'snipe']
 
 }
 
@@ -49,13 +53,9 @@ container.addEventListener('click', (e) => {
     ammo--
     ammoDisp.innerHTML = ammo
     updateMagazine()
-
-
-
-    /*
-     rows of 8
-    */
-
+    if (ammo <= 0) {
+        alert('OUT OF AMMO! GAME OVER')
+    }
 
 
     // check for a HIT
@@ -69,6 +69,7 @@ container.addEventListener('click', (e) => {
             bird.remove()
             score += 1
             scoreBox.innerHTML = score
+            checkScore()
         }
     })
     // bullet holes (event x,y - width, height of hole div)
@@ -89,14 +90,54 @@ function createBird(birdType) {
     bird.style.top = `${altitude}%`
 
     birdsArray.push(bird)
-    container.appendChild(bird)
+    sky.appendChild(bird)
 }
 
-createBird('pigeon')
-createBird('swallow')
-createBird('snipe')
-createBird('osprey')
-createBird('curlew')
+// createBird('pigeon')
+// createBird('swallow')
+// createBird('snipe')
+// createBird('osprey')
+// createBird('curlew')
+// createBird('hawk')
+
+function makeRound(roundNum) {
+    if (roundNum >= rounds.length) {
+        alert('you completed the game!')
+    }
+    sky.innerHTML = ''
+    score = 0
+    ammo = 99  // TODO - this will be taken from the round object, + time, delay range...
+    updateMagazine()
+    let timeoutArray = []
+    rounds[roundNum].forEach(birdType => {
+        let delay = Math.floor(Math.random() * 20000) // <-- TODO make delay range a variable
+        let timeout = setTimeout(() => {
+            createBird(birdType)
+        }, delay)
+        timeoutArray.push(timeout)
+    })
+}
+
+const checkScore = () => {
+    if (score === rounds[round].length) {
+        alert('You get em all! ready for next round?')
+        // reveal 2 buttons - next round or play this round again
+        round++
+        makeRound(round)
+    }
+}
+startGame()
+
+function startGame() {
+    round = 1
+    makeRound(round)
+
+
+}
+
+
+
+
 
 
 /*
@@ -110,8 +151,6 @@ LOSE CONDITIONS
     run out of ammo
 
 have ammo drops floating in from above
-
-
 
     START GAME ->
         round = 1
